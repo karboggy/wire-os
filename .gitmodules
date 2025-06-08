@@ -8,7 +8,8 @@
 	branch = walnascar
 [submodule "anki/wired"]
 	path = anki/wired
-	url = https://github.com/os-vector/wired
+	url = https://github.com/karboggy/wired
+	branch = karb-os
 [submodule "anki/vic-cloudless"]
 	path = anki/vic-cloudless
 	url = https://github.com/kercre123/vic-cloudless
