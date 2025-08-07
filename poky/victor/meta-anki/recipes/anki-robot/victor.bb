@@ -104,9 +104,8 @@ do_clean:append() {
     os.system('git -C "%s" clean -Xfd' % s)
 }
 
-
-
 do_compile[pseudo] = "0"
+do_compile[progress] = "outof:^\[(\d+)/(\d+)\]\s+"
 
 run_victor() {
   export -n CCACHE_DISABLE
@@ -179,11 +178,8 @@ run_victor() {
     "$@"
 }
 
-
 do_compile () {
   cd ${S}
-
-  run_victor bash -c 'which python2; ls -l $(which python2); python2 --version'
 
   TOPLEVEL=$(run_victor bash -c 'source ./project/victor/envsetup.sh && gettop')
   export TOPLEVEL
@@ -237,6 +233,13 @@ do_compile[nostamp] = "1"
 
 do_install () {
   run_victor ${S}/project/victor/scripts/install.sh ${BUILDSRC} ${D}
+  # for if anyone wants to run stuff compiled with vicos-sdk clang++
+  install -d ${D}/usr/lib
+  install -m 0755 ${D}/anki/lib/libc++.so.1 ${D}/usr/lib/
+  install -m 0755 ${D}/anki/lib/libc++abi.so.1 ${D}/usr/lib/
+  install -m 0755 ${D}/anki/lib/libunwind.so.1 ${D}/usr/lib/
+  # no need to ship these twice
+  rm -f ${D}/anki/lib/libc++.so.1 ${D}/anki/lib/libc++abi.so.1 ${D}/anki/lib/libunwind.so.1
 }
 
 do_generate_victor_canned_fs_config () {
@@ -328,3 +331,4 @@ INSANE_SKIP:${PN} = " already-stripped ldflags dev-elf"
 EXCLUDE_FROM_SHLIBS = "1"
 
 FILES:${PN} += "anki/"
+FILES:${PN} += "usr/lib/"

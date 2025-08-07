@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# author: Wire/@kercre123
+
 set -e
 
 echo "This script gives/takes away debuggerd the ability to backtrace tombstones from the Anki programs, making them appear in logs."
@@ -37,6 +39,7 @@ fi
 echo
 echo "Stopping anki-robot.target..."
 systemctl stop anki-robot.target
+sleep 3
 echo "Reloading daemons..."
 systemctl daemon-reload
 echo "Starting anki-robot.target..."
